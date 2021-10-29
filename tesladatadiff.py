@@ -12,7 +12,7 @@ from matplotlib.pyplot import figure
 import pandas as pd
 
 class TeslaDatasetDiff(Dataset):
-    def __init__(self, pData = 'tesla_driving_temp_data.csv', ID = -1, device = "cuda:0"):
+    def __init__(self, pData = 'tesla_driving_temp_data.csv', ID = -1, device = "cuda:0", normalize = 1):
 
         pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -70,7 +70,7 @@ class TeslaDatasetDiff(Dataset):
         
         # Normalisation = 1000
         df_x_tensor = torch.tensor(df_x.values).float()
-        df_y_tensor = torch.tensor(df_y.values).float()*1000
+        df_y_tensor = torch.tensor(df_y.values).float()*normalize
 
         # Bounds
         lb = torch.min(df_x_tensor,0).values.numpy()
