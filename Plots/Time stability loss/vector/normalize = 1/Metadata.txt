@@ -1,0 +1,4 @@
+Only with vectorised time stabiluity loss
+see what happens
+
+normalize = 1
