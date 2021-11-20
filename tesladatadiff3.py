@@ -321,7 +321,7 @@ class TeslaDatasetpinn(Dataset):
         #df_x = df0[["time"]]
         #df_y = df0[["Differentiation"]]
 
-        df_x = df0[["power","speed", "battery_level", "outside_temp", "battery_temperature", "rel_time"]]
+        df_x = df0[["power","speed", "battery_level", "outside_temp", "rel_time"]]
         df_y = df0[["Differentiation"]]
 
         delta_t = df0[["delta_t"]]
