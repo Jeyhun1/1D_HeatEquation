@@ -32,11 +32,19 @@ class TeslaDataset(Dataset):
         df_x = df[["power","speed", "battery_level", "outside_temp"]]
         df_y = df[["battery_temperature"]]
         
-        self.x = (torch.tensor(df_x.values)).float().to(device)
+        # self.x = (torch.tensor(df_x.values)).float().to(device)
+        # self.y = torch.tensor(df_y.values).float().to(device)
+        x = (torch.tensor(df_x.values)).float().to(device)
         self.y = torch.tensor(df_y.values).float().to(device)
         
-        self.lb = torch.min(self.x,0).values
-        self.ub = torch.max(self.y,0).values
+        #self.lb = torch.min(self.x,0).values
+        #self.ub = torch.max(self.x,0).values
+        self.lb = torch.min(x,0).values
+        self.ub = torch.max(x,0).values
+         
+        # normalise input parameters
+        self.x = 2.0*(x - self.lb)/(self.ub - self.lb) - 1.0
+        #self.y = 2.0*(y - self.lb)/(self.ub - self.lb) - 1.0
         
         
     def __len__(self):
