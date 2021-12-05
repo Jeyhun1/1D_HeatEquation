@@ -345,7 +345,7 @@ class TeslaDatasetpinn(Dataset):
         ub = torch.max(df_x_tensor,0).values.numpy()
         lb[3]=df[['outside_temp']].min()
         ub[3]=df[['outside_temp']].max()
-        #print('delta ttttt ', delta_t)
+        
 
         self.x = df_x_tensor
         self.y = df_y_tensor
