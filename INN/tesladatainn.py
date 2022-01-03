@@ -18,22 +18,27 @@ class TeslaDatasetInn(Dataset):
         # import "tesla_driving_temp_data.csv" dataset
         df = pd.read_csv(pData)
         self.device = device
-        
+
+        if ID == -1:
+            df0=df # use all dataset (default)
+        else:
+            df0=df[df['drive_id'] == ID] # use a slice of dataset based on drive-id
+
         # Sort the data by date
         #df = df.sort_values(by="date")
         #print(df)
         
         # Interpolate the missing data
-        df['outside_temp'] = df['outside_temp'].interpolate()
-        df['speed'] = df['speed'].interpolate()
+        df0['outside_temp'] = df['outside_temp'].interpolate()
+        df0['speed'] = df['speed'].interpolate()
         #print(df) 
         
         #define list of id-values for test data
         values = [16,39,47,52,72,81,88]
         if data != 'all':
           if data == "train":
-            #drop any rows that have 7 or 11 in the rebounds column
-            df = df[df.drive_id.isin(values) == False]
+            #drop rows
+            df0 = df0[df0.drive_id.isin(values) == False]
           elif data == "test" and ID not in values:
             raise ValueError("Pick ID value from following list [16,39,47,52,72,81,88]")
         
@@ -41,8 +46,8 @@ class TeslaDatasetInn(Dataset):
         # Extract features and labels
         # [power, speed, battery_level, outside_temp] => [battery_temperature]
 
-        df_x = df[["power","speed", "battery_level", "outside_temp"]]
-        df_y = df[["battery_temperature"]]
+        df_x = df0[["power","speed", "battery_level", "outside_temp"]]
+        df_y = df0[["battery_temperature"]]
         
         # convert features and labels to tensors
         self.x = torch.tensor(df_x.values).float().to(device)
@@ -59,17 +64,6 @@ class TeslaDatasetInn(Dataset):
         # Normalised features and labels between [-1,1]
         self.x_norm = 2.0*(self.x - self.lb_x)/(self.ub_x- self.lb_x) - 1.0
         self.y_norm = 2.0*(self.y - self.lb_y)/(self.ub_y - self.lb_y) - 1.0
-
-#         # convert features and labels to tensors
-#         x = torch.tensor(df_x.values).float().to(device)
-#         self.y = torch.tensor(df_y.values).float().to(device)
-        
-#         # Bounds for the features
-#         self.lb_x = torch.min(x,0).values
-#         self.ub_x = torch.max(x,0).values
-        
-#         # Normalised features and labels between [-1,1]
-#         self.x_norm = 2.0*(x - self.lb_x)/(self.ub_x- self.lb_x) - 1.0
 
     def __len__(self):
         return self.x_norm.shape[0]

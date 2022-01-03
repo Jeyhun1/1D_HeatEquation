@@ -116,7 +116,7 @@ class TeslaDatasetMlp(Dataset):
         values = [16,39,47,52,72,81,88]
         if data != 'all':
           if data == "train":
-            #drop any rows that have 7 or 11 in the rebounds column
+            #drop rows
             df0 = df0[df0.drive_id.isin(values) == False]
           elif data == "test" and ID not in values:
             raise ValueError("Pick ID value from following list [16,39,47,52,72,81,88]")

@@ -193,8 +193,8 @@ class INN():
                     if log_writer[0] == 'wb':
                         log_writer[1].log({'val Loss x': val_loss_x.item(), 'epoch': i_epoch})
                         log_writer[1].log({'val Loss y': val_loss_y.item(), 'epoch': i_epoch})
-                        log_writer[1].log({'val loss ssim y': val_loss_y_ssim.item(), 'epoch': i_epoch})
-                        log_writer[1].log({'val loss sdtw y': val_loss_y_sdtw.item(), 'epoch': i_epoch})
+                        #log_writer[1].log({'val loss ssim y': val_loss_y_ssim.item(), 'epoch': i_epoch})
+                        #log_writer[1].log({'val loss sdtw y': val_loss_y_sdtw.item(), 'epoch': i_epoch})
 
             
             # Log all training loss terms
@@ -377,8 +377,9 @@ class INN():
             l_rev.backward()
             
             # Clamp gradients
-            for p in self.model.parameters():
-                p.grad.data.clamp_(-15.00, 15.00)
+            # for p in self.model.parameters():
+            #     p.grad.data.clamp_(-15.00, 15.00)
+            nn.utils.clip_grad_value_(self.model.parameters(), 1.00)
             self.optimizer.step()
         
         # Return losses for logging
