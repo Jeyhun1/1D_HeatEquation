@@ -13,8 +13,16 @@ import pandas as pd
 
 
 class TeslaDatasetInn(Dataset):
-    def __init__(self, pData =  '/content/drive/MyDrive/FrEIA-master/example/tesla_driving_temp_data.csv',ID = -1, device = "cuda:0", normalize = 1, data = "train"):
+    def __init__(self, pData =  'tesla_driving_temp_data.csv',ID = -1, device = "cuda:0", data = "train"):
+        """
+        Constructor for the dataset for the Invertible Neural Network model
 
+        Args: 
+            pData: path for the tesla dataset
+            ID: is the ID number of the corresponding drive in the dataset (default ID=-1 corresponds to all data)
+            device: represents the device on which the computations will take place ("cuda:0" or "cpu")
+            data: represents which type of data is considered. "all" is all data, "train" is the training data, "test" is the test data
+        """       
         # import "tesla_driving_temp_data.csv" dataset
         df = pd.read_csv(pData)
         self.device = device

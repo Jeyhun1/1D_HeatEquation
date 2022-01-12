@@ -13,8 +13,19 @@ import pandas as pd
 
 
 class TeslaDatasetPinn(Dataset):
-    def __init__(self, pData = '/content/drive/MyDrive/NeuralSolvers-heat-eqn/examples/Research project/tesla_driving_temp_data.csv',ID = -1, device = "cuda:0", normalize = 1, data = "train", battery_level = False, diff = "fwd_diff"):
+    def __init__(self, pData = 'tesla_driving_temp_data.csv',ID = -1, device = "cuda:0", normalize = 1, data = "train", battery_level = True, diff = "fwd_diff"):
+        """
+        Constructor for the dataset for the PINN model
 
+        Args: 
+            pData: path for the tesla dataset
+            ID: is the ID number of the corresponding drive in the dataset (default ID=-1 corresponds to all data)
+            device: represents the device on which the computations will take place ("cuda:0" or "cpu")
+            normalize: a coefficient to normalize the low values of the differential operator
+            data: represents which type of data is considered. "all" is all data, "train" is the training data, "test" is the test data
+            battery_level: represents whether or not to include battery level as input parameter
+            diff: represents the method to calculate the time derivative ("fwd_diff" for forward difference, "central_diff" for central differences)
+        """ 
         pd.options.mode.chained_assignment = None  # default='warn'
         # import "tesla_driving_temp_data.csv" dataset
         df = pd.read_csv(pData)

@@ -13,7 +13,16 @@ import pandas as pd
 
 
 class TeslaDatasetMlp(Dataset):
-    def __init__(self, pData = '/content/drive/MyDrive/NeuralSolvers-heat-eqn/examples/Research project/tesla_driving_temp_data.csv',ID = -1, device = "cuda:0", data = "train"):
+    def __init__(self, pData = 'tesla_driving_temp_data.csv',ID = -1, device = "cuda:0", data = "train"):
+        """
+        Constructor for the dataset for the MLP model
+
+        Args: 
+            pData: path for the tesla dataset
+            ID: is the ID number of the corresponding drive in the dataset (default ID=-1 corresponds to all data)
+            device: represents the device on which the computations will take place ("cuda:0" or "cpu")
+            data: represents which type of data is considered. "all" is all data, "train" is the training data, "test" is the test data
+        """   
 
         pd.options.mode.chained_assignment = None  # default='warn'
         # import "tesla_driving_temp_data.csv" dataset
@@ -139,7 +148,7 @@ class TeslaDatasetMlp(Dataset):
         temp = df0[["battery_temperature"]]
         temp = torch.tensor(temp.values).float()
         
-        #
+        # transform to torch tensors
         df_x_tensor = torch.tensor(df_x.values).float()
         df_y_tensor = torch.tensor(df_y.values).float()
 
