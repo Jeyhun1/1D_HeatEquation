@@ -181,8 +181,8 @@ class TeslaDatasetNo(Dataset):
         lb[3]=df[['outside_temp']].min()
         ub[3]=df[['outside_temp']].max()
 
-        self.x = df_x_tensor
-        self.y = df_y_tensor
+        self.x = df_x_tensor.to(device)
+        self.y = df_y_tensor.to(device)
         self.dt = delta_t
         self.t = t
         self.batch_indices = idxx
